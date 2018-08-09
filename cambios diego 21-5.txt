@@ -1,0 +1,4 @@
+ruta vista publica
+vistas publicas catalogo y home
+controlador PublicHomeController
+migracion productos +tipo(1nuevo 2 usado)

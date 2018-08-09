@@ -1,0 +1,7 @@
+madercar_laravel
+Laravel123456
+
+BD
+punto_tecnologia
+Tecnologia1234
+192.168.0.63
