@@ -1,6 +1,6 @@
 @extends ('mostrador.layout.layout')
 @section('title')
-	Gestion de ventas
+	Gestion de venta
 @endsection
 @section('script_header')
 	<!-- tables -->
