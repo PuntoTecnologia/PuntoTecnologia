@@ -11,7 +11,7 @@ class RemCompHist extends Migration
      *
      * @return void
      */
-    public function up()
+  public function up()
     {
         //creamos algunos campos sin FK para guardar el historial y q no se modifiquen en el tiempo
         Schema::create('rem_comp_hist', function (Blueprint $table) {

@@ -11,7 +11,7 @@ class RemCompTmp extends Migration
      *
      * @return void
      */
-   public function up()
+    public function up()
     {
          Schema::create('rem_comp_tmp', function (Blueprint $table) {
             $table->increments('id');
