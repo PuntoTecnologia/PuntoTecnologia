@@ -5,7 +5,7 @@ use App\metakeys;
 use App\my_site;
 use App\meta_description;
 //MODIFIQUE INDEX POR DESTACADOS. INDEX DIRECCIONABA A VISTA HOME QUE NO ESTA TERMINADA
-Route::get('/back','PublicHomeController@ultimos_ingresos');
+Route::get('/','PublicHomeController@ultimos_ingresos');
 Route::post('/suscribir','PanelController@suscribe');
 Route::get('/catalogo','PublicHomeController@catalogo');
 Route::get('/ofertas','PublicHomeController@ofertas');
