@@ -200,13 +200,21 @@
 			<tbody>
 			  <tr>
 			  	<!-- pongo los datos q me trae la table, despues hago consulta para traer los datos q me pida con join -->
+			  	@php
+			  	$total = 0
+			  	@endphp
 			  	@foreach ($temporal as $prod)
+			  	@php
+			  		
+			  		$total = $total + ($prod->cantidad * $prod->costo_unit)
+
+			  	@endphp
 					              <tr>
 					                <td><input type="number" name="txtcantidad" value="{{ $prod->cantidad }}"></td>
 					                <td><span class="bt-content">{{ $prod->prod_id }}</span></td>
 					                <td><span class="bt-content"></span>{{ $prod->titulo }}</td>
 					                <td><input type="number" step="0,01" name="txtcosto" value="{{ $prod->costo_unit }}"></td>
-					                <td><span class="bt-content">${{ ($prod->cantidad * $prod->costo_unit) }}></span></td>
+					                <td><span class="bt-content">${{ ($prod->cantidad * $prod->costo_unit) }}-</span></td>
 					              
 					              </tr>
 					            @endforeach
@@ -217,7 +225,7 @@
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">Total:</span></td>
-				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">$</span></td>
+				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">${{ $total }}-</span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 			  </tr>
 			</tfoot>

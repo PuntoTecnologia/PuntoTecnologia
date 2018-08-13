@@ -5,6 +5,7 @@ use\DB;
 use\app\prover;
 use\app\product;
 use\app\rem_comp_tmp;
+use auth;
 use Illuminate\Http\Request;
 
 class MostradorController extends Controller
@@ -18,7 +19,7 @@ class MostradorController extends Controller
     {
     	$provers = DB::table('prover')->get();
     	$product = DB::table('productos')->get();
-        $temporal = DB::table('productos')->join('rem_comp_tmp','rem_comp_tmp.prod_id','=','productos.id')->get();
+        $temporal = DB::table('productos')->join('rem_comp_tmp','rem_comp_tmp.prod_id','=','productos.id')->where('rem_comp_tmp.usu_id',auth::user()->id)->get();
        
     	return view('mostrador.compra')->with('provers', $provers)->with('product', $product)->with('temporal',$temporal);
     }
@@ -50,7 +51,7 @@ class MostradorController extends Controller
            
            $crear_compra_tmp = new rem_comp_tmp;
 
-            $temp = DB::table('rem_comp_tmp')->where('prod_id',$productos[0]->id)->limit(1)->get();
+            $temp = DB::table('rem_comp_tmp')->where('prod_id',$productos[0]->id)->where('rem_comp_tmp.usu_id',auth::user()->id)->limit(1)->get();
 
             //return dd($temp);
             if(($temp)->isEmpty())
@@ -60,7 +61,7 @@ class MostradorController extends Controller
             $crear_compra_tmp->cantidad = 1;
             $crear_compra_tmp->costo_unit = $productos[0]->costo;
             $crear_compra_tmp->prov_id = $productos[0]->prover;
-            $crear_compra_tmp->usu_id = 1;
+            $crear_compra_tmp->usu_id = auth::user()->id;
             $crear_compra_tmp->save();
             }
             else
@@ -77,7 +78,7 @@ class MostradorController extends Controller
 
             $provers = DB::table('prover')->get();
             $product = DB::table('productos')->get();
-            $temporal = DB::table('productos')->join('rem_comp_tmp','rem_comp_tmp.prod_id','=','productos.id')->get();
+            $temporal = DB::table('productos')->join('rem_comp_tmp','rem_comp_tmp.prod_id','=','productos.id')->where('rem_comp_tmp.usu_id',auth::user()->id)->get();
 
             return view('mostrador.compra')->with('provers', $provers)->with('product', $product)->with('temporal', $temporal);
         
