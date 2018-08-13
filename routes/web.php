@@ -133,5 +133,5 @@ Route::post('/new_dolar', 'DolarController@new')->middleware('auth');
 Route::get('/mostrador/punto_venta', 'MostradorController@index');
 //COMPRA
 Route::get('/mostrador/punto_compra', 'MostradorController@compra');
-Route::post('/mostrador/punto_compra/search_code', 'MostradorController@search_code');
+Route::post('/mostrador/punto_compra/search_code/{id}', 'MostradorController@search_code');
 Route::get('/mostrador/punto_compra/search_product/{id}', 'MostradorController@search_product');

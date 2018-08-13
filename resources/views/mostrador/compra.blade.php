@@ -1,6 +1,6 @@
 @extends ('mostrador.layout.layout')
 @section('title')
-	Gestion de ventas
+	Gestion de Compras
 @endsection
 @section('script_header')
 	<!-- tables -->
@@ -71,10 +71,7 @@
 
 <div class="col-md-12">
 		<!--LINEA SEPARADOR-->
-		<div class="col-md-12" style="margin:1em;border-bottom: 1px solid #ccc;"></div>
-		<div class="col-md-2">N.Factura
-		<input type="text" name="factura" class="form-control1" readonly>
-		</div>
+		
 		<div class="col-md-6">Proveedor
 		<div class="input-group">							
 			<span class="input-group-addon">
@@ -134,7 +131,7 @@
 		<div class="col-md-4 col-sd-offset-8" style="padding: 0;">
 			<!--BUSCADOR POR CODIGO-->
 			<div class="w3l_search" style="width: 100%;margin:0em;">
-				<form id="codigo" action="/mostrador/punto_compra/search_code" method="post">
+				<form id="codigo" action="/mostrador/punto_compra/search_code/0" method="post">
 					{{ csrf_field() }}
 					<input type="text" onchange="submit()" name="codigo" placeholder="Busqueda por codigo" required>
 				</form>
@@ -148,7 +145,7 @@
 				    <!-- Modal content-->
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal2">&times;</button>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
 				        <h4 class="modal-title">Listado de Productos en Stock</h4>
 				      </div>
 				      <div class="modal-body">
@@ -194,7 +191,7 @@
 			  <tr>
 				<th class="col-md-1">Cantidad</th>
 				<th class="col-md-2">Codigo</th>
-				<th class="col-md-5">Descripcion</th>
+				<th class="col-md-5">Descripción</th>
 				<th class="col-md-2">Unitario</th>
 				<th class="col-md-2">Sub-Total</th>
 				<th>Accion</th>
@@ -202,13 +199,17 @@
 			</thead>
 			<tbody>
 			  <tr>
-				<td><span class="bt-content">2</span></td>
-				<td><span class="bt-content">435354636</span></td>
-				<td><span class="bt-content">Articulo de prueba de factura</span></td>
-				<td><span class="bt-content">$15-</span></td>
-				<td><span class="bt-content">$30-</span></td>
-				<td><a href="X"></a></td>
-			  </tr>
+			  	<!-- pongo los datos q me trae la table, despues hago consulta para traer los datos q me pida con join -->
+			  	@foreach ($temporal as $prod)
+					              <tr>
+					                <td><input type="number" name="txtcantidad" value="{{ $prod->cantidad }}"></td>
+					                <td><span class="bt-content">{{ $prod->prod_id }}</span></td>
+					                <td><span class="bt-content"></span>{{ $prod->titulo }}</td>
+					                <td><input type="number" step="0,01" name="txtcosto" value="{{ $prod->costo_unit }}"></td>
+					                <td><span class="bt-content">${{ ($prod->cantidad * $prod->costo_unit) }}></span></td>
+					              
+					              </tr>
+					            @endforeach
 			</tbody>
 			<tfoot>
 				<tr>
@@ -216,7 +217,7 @@
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">Total:</span></td>
-				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">$30-</span></td>
+				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">$</span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 			  </tr>
 			</tfoot>
