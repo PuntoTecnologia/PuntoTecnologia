@@ -18,7 +18,6 @@ class RemCompTmp extends Migration
             $table->integer('prod_id')->references('id')->on('productos')->onDelete('cascade');
             $table->integer('cantidad');
             $table->double('costo_unit');
-            $table->integer('prov_id')->references('id')->on('prover')->onDelete('cascade');
             $table->integer('usu_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

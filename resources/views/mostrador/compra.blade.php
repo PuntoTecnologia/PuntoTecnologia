@@ -71,21 +71,24 @@
 
 <div class="col-md-12">
 		<!--LINEA SEPARADOR-->
-		
-		<div class="col-md-6">Proveedor
+
+		<div class="col-md-2">Remito N.
+			<input type="text" class="form-control1" value="000{{ $remito_existente->id }}" readonly>
+		</div>
+		<div class="col-md-4">Proveedor
 		<div class="input-group">							
 			<span class="input-group-addon">
 				<i class="">
 					<button type="button" data-toggle="modal" data-target="#proveedor">...</button>
 				</i>
 			</span>
-			<input type="text" class="form-control1">
+			<input type="text" class="form-control1" value="@foreach ($provers as $p) @if ($remito_existente->prov_id == $p->id){{$p->name}}@endif @endforeach">
 		<!-- Trigger the modal with a button -->
 		<!-- Modal -->
 		<div id="proveedor" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 
-		    <!-- Modal content-->
+		    <!-- MODAL DE PROVEEDORES-->
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -97,7 +100,7 @@
 						@foreach ($provers as $prov)
 					  		<tr>
 						  		<td class="col-md-10"><span class="bt-content">{{ $prov->name }}</span></td>
-								<td class="col-md-2"><span class="bt-content"><a href="">Seleccionar</a></span></td>
+								<td class="col-md-2"><span class="bt-content"><a href="/mostrador/punto_compra/prov_select/{{ $prov->id }}">Seleccionar</a></span></td>
 							</tr>
 						@endforeach
 					</tbody>
@@ -115,10 +118,21 @@
 		</div>
 		</div>
 		<div class="col-md-2">Cond.Pago
-		<select class="form-control1">
-			<option value="2">Efectivo</option>
-			<option value="1">Cta. Cte</option>
-		</select>
+		
+			<form id="cantidad" action="/mostrador/punto_compra/cond_pago" method="post">
+				{{ csrf_field() }}
+					<select name="cond_pago" onchange="submit()" class="form-control1">
+						<option value="1" @if ($remito_existente->cond_pago == 1) selected @endif>Efectivo</option>
+						<option value="2"@if ($remito_existente->cond_pago == 2) selected @endif>Cta. Cte</option>
+					</select>
+			</form>
+		
+		</div>
+		<div class="col-md-2">Remito Proveedor
+			<form action="/mostrador/punto_compra/referencia" method="post">
+					{{ csrf_field() }}
+					<input type="text" onchange="submit()" name="ref_rem_prov" class="form-control1" required value="{{ $remito_existente->ref_fact_prov }}">
+			</form>
 		</div>
 		<div class="col-md-2">Fecha
 		<input type="text" name="fecha" class="form-control1" value="{{ date("d-m-Y") }}" readonly>
@@ -164,7 +178,7 @@
 					                <td>{{ $prod->codigo }}</td>
 					                <td>{{ $prod->titulo }}</td>
 					                <td>u${{ $prod->costo }}-</td>
-					                <td><a href="/mostrador/punto_compra/search_product/{{ $prov->id }}">Seleccionar</a></td>
+					                <td><a href="/mostrador/punto_compra/search_code/{{ $prod->id }}">Seleccionar</a></td>
 					              
 					              </tr>
 					            @endforeach
@@ -190,11 +204,11 @@
 			<thead>
 			  <tr>
 				<th class="col-md-1">Cantidad</th>
-				<th class="col-md-2">Codigo</th>
+				<th class="col-md-1">Codigo</th>
 				<th class="col-md-5">Descripción</th>
 				<th class="col-md-2">Unitario</th>
 				<th class="col-md-2">Sub-Total</th>
-				<th>Accion</th>
+				<th class="col-md-1">Accion</th>
 			  </tr>
 			</thead>
 			<tbody>
@@ -210,12 +224,29 @@
 
 			  	@endphp
 					              <tr>
-					                <td><input type="number" name="txtcantidad" value="{{ $prod->cantidad }}"></td>
-					                <td><span class="bt-content">{{ $prod->prod_id }}</span></td>
+					                <td>
+					                	<form id="cantidad" action="/mostrador/punto_compra/cant/{{ $prod->id}}" method="post">
+										{{ csrf_field() }}
+										<input onchange="submit()" style="width:80%;padding: 0.3em" type="number" name="cantidad" value="{{ $prod->cantidad }}">
+										</form>
+									</td>
+					                <td><span class="bt-content">{{ $prod->codigo }}</span></td>
 					                <td><span class="bt-content"></span>{{ $prod->titulo }}</td>
-					                <td><input type="number" step="0,01" name="txtcosto" value="{{ $prod->costo_unit }}"></td>
-					                <td><span class="bt-content">${{ ($prod->cantidad * $prod->costo_unit) }}-</span></td>
-					              
+					                <td>
+										<form id="unitario" action="/mostrador/punto_compra/unitario/{{ $prod->id}}" method="post">
+										{{ csrf_field() }}
+										u$<input onchange="submit()" style="width:80%;padding: 0.3em" type="number" name="unitario" step="0,01" value="{{ $prod->costo_unit }}">-
+										</form>
+									</td>
+					                <td><span class="bt-content">u${{ ($prod->cantidad * $prod->costo_unit) }}-</span></td>
+					                <td>	
+					                	<form action="/mostrador/punto_compra/destroy_rem_comp_tmp/{{ $prod->id }}" method="post" name="eliminar-categoria">
+									      	{{ method_field('DELETE') }}
+									      	{{ csrf_field() }}
+								      		<button type="submit" class="btn btn-primary btn-delete">X</button>
+									    </form>
+
+
 					              </tr>
 					            @endforeach
 			</tbody>
@@ -225,7 +256,7 @@
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">Total:</span></td>
-				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">${{ $total }}-</span></td>
+				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content">u${{ $total }}-</span></td>
 				<td style="background: #fff;border-bottom: 2px solid #fcb216;border-top: 2px solid #fcb216;""><span class="bt-content"></span></td>
 			  </tr>
 			</tfoot>

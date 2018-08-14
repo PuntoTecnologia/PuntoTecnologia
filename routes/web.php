@@ -133,5 +133,13 @@ Route::post('/new_dolar', 'DolarController@new')->middleware('auth');
 Route::get('/mostrador/punto_venta', 'MostradorController@index');
 //COMPRA
 Route::get('/mostrador/punto_compra', 'MostradorController@compra');
-Route::post('/mostrador/punto_compra/search_code/{id}', 'MostradorController@search_code');
-Route::get('/mostrador/punto_compra/search_product/{id}', 'MostradorController@search_product');
+//REMITO COMPRA
+Route::get('/mostrador/punto_compra/search_code/{id}', 'RemitoCompraController@search_code');
+Route::post('/mostrador/punto_compra/search_code/{id}', 'RemitoCompraController@search_code');
+Route::get('/mostrador/punto_compra/search_product/{id}', 'RemitoCompraController@search_product');
+Route::get('/mostrador/punto_compra/prov_select/{id}', 'RemitoCompraController@update_prov');
+Route::delete('/mostrador/punto_compra/destroy_rem_comp_tmp/{rem_comp_tmp}', 'RemitoCompraController@destroy_rem_comp_tmp');
+Route::post('/mostrador/punto_compra/cant/{id}', 'RemitoCompraController@cant_edit');
+Route::post('/mostrador/punto_compra/unitario/{id}', 'RemitoCompraController@unitario_edit');
+Route::post('/mostrador/punto_compra/cond_pago', 'RemitoCompraController@cond_pago_edit');
+Route::post('/mostrador/punto_compra/referencia', 'RemitoCompraController@ref_rem_prov');

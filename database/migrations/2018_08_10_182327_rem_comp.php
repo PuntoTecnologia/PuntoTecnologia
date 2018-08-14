@@ -15,13 +15,12 @@ class RemComp extends Migration
     {
         Schema::create('rem_comp', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('prod_id')->references('id')->on('productos')->onDelete('cascade');
-            $table->integer('iu')->nullable();
-            $table->double('costo_unit');
+            $table->double('valor');
             $table->integer('prov_id')->references('id')->on('prover')->onDelete('cascade');
             $table->integer('usu_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('num_remito')->nullable();
             $table->integer('ubicacion');
+            $table->integer('ref_fact_prov');
+            $table->integer('cond_pago');
             $table->timestamps();
         });
     }
